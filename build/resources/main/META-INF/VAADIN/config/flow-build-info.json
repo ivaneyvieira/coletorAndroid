@@ -1,9 +1,0 @@
-{
-  "compatibilityMode": false,
-  "productionMode": false,
-  "npmFolder": "/home/ivaneyvieira/git/coletorAndroid",
-  "generatedFolder": "/home/ivaneyvieira/git/coletorAndroid/target/frontend",
-  "frontendFolder": "/home/ivaneyvieira/git/coletorAndroid/frontend",
-  "pnpm.enable": false,
-  "require.home.node": false
-}
