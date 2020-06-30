@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:coletor_android/models/UsuarioResult.dart';
-import 'package:coletor_android/services/Service.dart';
+import 'package:coletor_android/services/UsuarioService.dart';
 import 'package:flutter/material.dart';
 
 class FormLogin extends StatelessWidget {
-  final service = ColetorService();
+  final service = UsuarioService();
   var txtMatricla = TextEditingController();
   var txtNome = TextEditingController();
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:coletor_android/models/UsuarioResult.dart';
-import 'package:coletor_android/services/Service.dart';
+import 'package:coletor_android/services/UsuarioService.dart';
 import 'package:coletor_android/view/FormLogin.dart';
 import 'package:flutter/material.dart';
 

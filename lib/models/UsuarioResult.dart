@@ -1,35 +1,32 @@
-import 'dart:convert';
-
 class UsuarioResult {
   final List<String> erros;
-  final Usuario usuario;
+  final Usuario data;
 
-  UsuarioResult({this.erros, this.usuario});
+  UsuarioResult({this.erros, this.data});
 
   factory UsuarioResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];
-    final errosList =
-        (json['erros'] as List<dynamic>).map((e) => e as String).toList();
+    final errosList = (json['erros'] as List<dynamic>).map((e) => e as String).toList();
     if (data == null)
-      return UsuarioResult(erros: errosList, usuario: null);
+      return UsuarioResult(erros: errosList, data: null);
     else
-      return UsuarioResult(erros: errosList, usuario: Usuario.fromJson(data));
+      return UsuarioResult(erros: errosList, data: Usuario.fromJson(data));
   }
 }
 
 class Usuario {
+  final int id;
   final int matricula;
   final String nome;
   final String senha;
   final String apelido;
-  final int version;
 
-  Usuario({this.matricula, this.nome, this.senha, this.apelido, this.version});
+  Usuario({this.id, this.matricula, this.nome, this.senha, this.apelido});
 
   factory Usuario.fromJson(Map<String, dynamic> json) => Usuario(
-      matricula: json["matricula"] as int,
-      nome: json["nome"] as String,
-      senha: json["senha"] as String,
-      apelido: json["apelido"] as String,
-      version: json["version"] as int);
+      id: json['id'] as int,
+      matricula: json['matricula'] as int,
+      nome: json['nome'] as String,
+      senha: json['senha'] as String,
+      apelido: json['apelido'] as String);
 }
