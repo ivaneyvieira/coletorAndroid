@@ -4,6 +4,8 @@ import 'package:coletor_android/models/UsuarioResult.dart';
 import 'package:coletor_android/services/UsuarioService.dart';
 import 'package:flutter/material.dart';
 
+import 'FormMenu.dart';
+
 class FormLogin extends StatelessWidget {
   final service = UsuarioService();
   var txtMatricla = TextEditingController();
@@ -24,6 +26,15 @@ class FormLogin extends StatelessWidget {
               decoration: InputDecoration(labelText: 'Matrícula'),
               keyboardType: TextInputType.number,
               controller: txtMatricla,
+              onEditingComplete: (){
+                final mat = txtMatricla.text;
+                final nomeFuture = service.findUsuarioByMatricula(mat);
+                nomeFuture.then((value) {
+                  processFuture(context, value);
+                }).catchError((e) {
+                  txtNome.text = "";
+                });
+              },
             ),
             TextFormField(
               readOnly: true,
@@ -32,13 +43,10 @@ class FormLogin extends StatelessWidget {
             ),
             RaisedButton(
               onPressed: () {
-                final mat = txtMatricla.text;
-                final nomeFuture = service.findUsuarioByMatricula(mat);
-                nomeFuture.then((value) {
-                  processFuture(context, value);
-                }).catchError((e) {
-                  txtNome.text = "";
-                });
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FormMenu()),
+                );
               },
               child: const Text(
                 'Acessar o Inventário',
@@ -73,8 +81,7 @@ class FormLogin extends StatelessWidget {
   }
 
   FutureOr processFuture(context, UsuarioResult value) {
-    if (value.erros.length > 0)
-      showAlertDialog(context, value.erros.join("\n"));
-    txtNome.text = value.usuario?.nome ?? '';
+    if (value.erros.length > 0) showAlertDialog(context, value.erros.join("\n"));
+    txtNome.text = value.data?.nome ?? '';
   }
 }
