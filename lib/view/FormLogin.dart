@@ -59,11 +59,11 @@ class _FormLoginWidgetState extends State<FormLogin> with KeyboardHiderMixin {
     );
   }
 
-  void actionLogin(String txt) {
+  Future<void> actionLogin(String txt) async {
     try {
-      widget.state.actionLogin(txt, (usuario) => setUsuario(usuario));
+     await widget.state.actionLogin(txt, (usuario) => setUsuario(usuario));
     } on ViewException catch (e) {
-      widget.toast(e.toString());
+      widget.toast(e.errorMsg);
     }
   }
 

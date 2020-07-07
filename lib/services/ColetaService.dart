@@ -9,22 +9,13 @@ import 'GenericService.dart';
 class ColetaService extends GenericService<ColetaResult> {
   ColetaService() : super(modulo: 'coleta');
 
-  @override
-  ColetaResult fromJson(Map<String, dynamic> json) {
-    return ColetaResult.fromJson(json);
-  }
-
-  @override
-  ColetaResult fromJsonErro(List<String> erros) {
-    return ColetaResult(erros: erros, data: null);
-  }
-
   Future<UnitResult> fechaColeta(int coletaId) async {
     return methodPost('fechaColeta', {'coletaId': coletaId});
   }
 
   Future<ColetaResult> findColetaAberta(int inventarioId, int usuarioId) async {
-    return methodGet('findColetaAberta', '$inventarioId/$usuarioId');
+    return methodGet('findColetaAberta', '$inventarioId/$usuarioId', (json) => ColetaResult.fromJson(json),
+        (erros) => ColetaResult(erros: erros, data: null));
   }
 
   Future<UnitResult> mudaLote(int coletaId, int loteId, int inventarioId, int usuarioId, int coletorNum) async {
@@ -38,7 +29,8 @@ class ColetaService extends GenericService<ColetaResult> {
   }
 
   Future<ColetaResult> createColeta(int inventarioId, int usuarioId, int loteId, int coletorNum) async {
-    return methodGet('createColeta', '$inventarioId/$usuarioId/$loteId/$coletorNum');
+    return methodGet('createColeta', '$inventarioId/$usuarioId/$loteId/$coletorNum',
+        (json) => ColetaResult.fromJson(json), (erros) => ColetaResult(erros: erros, data: null));
   }
 
   Future<IntResult> contaColeta(int coletaId) async {

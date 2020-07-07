@@ -1,6 +1,4 @@
-
 import 'package:coletor_android/models/InventarioResult.dart';
-import 'package:coletor_android/models/UnitResult.dart';
 
 import 'GenericService.dart';
 
@@ -18,10 +16,12 @@ class InventarioService extends GenericService<InventarioResult> {
   }
 
   Future<InventarioResult> findByNum(int num) async {
-    return methodGet('findByNum', '$num');
+    return methodGet('findByNum', '$num', (json) => InventarioResult.fromJson(json),
+        (erros) => InventarioResult(erros: erros, data: null));
   }
 
   Future<InventarioResult> findAberto() async {
-    return methodGet('findAberto', '');
+    return methodGet('findAberto', '', (json) => InventarioResult.fromJson(json),
+        (erros) => InventarioResult(erros: erros, data: null));
   }
 }

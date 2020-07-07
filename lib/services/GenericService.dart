@@ -9,11 +9,8 @@ abstract class GenericService<T> {
 
   GenericService({this.modulo});
 
-  T fromJson(Map<String, dynamic> json);
-
-  T fromJsonErro(List<String> erros);
-
-  Future<T> methodGet(String method, String parameters) async {
+  Future<T> methodGet(String method, String parameters, T fromJson(Map<String, dynamic> json),
+      T fromJsonErro(List<String> erros)) async {
     try {
       Response response = await ConfigService.dio.get('${ConfigService.urlBase}/$modulo/$method/$parameters',
           options: Options(headers: <String, String>{'authorization': ConfigService.auth}));
@@ -33,7 +30,8 @@ abstract class GenericService<T> {
   Future<UnitResult> methodPost(String method, Map<String, dynamic> data) async {
     try {
       Response response = await ConfigService.dio.post('${ConfigService.urlBase}/$modulo/$method',
-          data: FormData.fromMap(data), options: Options(headers: <String, String>{'authorization': ConfigService.auth}));
+          data: FormData.fromMap(data),
+          options: Options(headers: <String, String>{'authorization': ConfigService.auth}));
 
       if (response.statusCode == 200)
         return UnitResult.fromJson(response.data);

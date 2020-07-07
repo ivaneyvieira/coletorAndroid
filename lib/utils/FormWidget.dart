@@ -32,7 +32,7 @@ abstract class FormWidget extends StatefulWidget {
 
   void toast(String msg) {
     Fluttertoast.showToast(
-        msg: msg, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 1, fontSize: 16.0);
+        msg: msg, toastLength: Toast.LENGTH_SHORT, gravity: ToastGravity.CENTER, timeInSecForIosWeb: 5, fontSize: 16.0);
   }
 
   void showErros(List<String> erros) {

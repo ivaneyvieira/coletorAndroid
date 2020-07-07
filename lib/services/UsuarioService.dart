@@ -16,7 +16,7 @@ class UsuarioService extends GenericService<UsuarioResult> {
   }
 
   Future<UsuarioResult> findUsuarioByMatricula(int matricula) async {
-    return methodGet('matricula', '$matricula');
+    return methodGet('matricula', '$matricula', (json) => UsuarioResult.fromJson(json),
+        (erros) => UsuarioResult(erros: erros, data: null));
   }
 }
-

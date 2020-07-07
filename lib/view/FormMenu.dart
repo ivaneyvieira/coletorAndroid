@@ -6,6 +6,7 @@ import 'package:coletor_android/viewModel/ColetorState.dart';
 import 'package:flutter/material.dart';
 
 import 'FormColeta.dart';
+import 'FormInventario.dart';
 import 'FormLote.dart';
 
 class FormMenu extends FormWidget {
@@ -28,6 +29,17 @@ class _FormMenuState extends State<FormMenu> {
           child: ListView(scrollDirection: Axis.vertical, children: <Widget>[
             CardState(
               state: widget.state,
+            ),
+            ButtonMenu(
+              label: "Inventário",
+              onPressed: () {
+                widget.navigateTo(
+                  context: context,
+                  form: () => FormInventario(
+                    state: widget.state,
+                  ),
+                );
+              },
             ),
             ButtonMenu(
               label: "Lote",

@@ -48,6 +48,7 @@ class ColetorState {
       ViewException.fail(erros);
     }).catchError((e) {
       setUsuario(null);
+      ViewException.fail([e.message]);
     }).whenComplete(() => onValue(_usuario));
   }
 

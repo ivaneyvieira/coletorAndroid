@@ -1,5 +1,4 @@
 import 'package:coletor_android/models/ProdutoResult.dart';
-import 'package:coletor_android/models/UnitResult.dart';
 
 import 'GenericService.dart';
 
@@ -17,6 +16,7 @@ class ProdutoService extends GenericService<ProdutoResult> {
   }
 
   Future<ProdutoResult> findById(int id) async {
-    return methodGet('findById', '$id');
+    return methodGet(
+        'findById', '$id', (json) => ProdutoResult.fromJson(json), (erros) => ProdutoResult(erros: erros, data: null));
   }
 }
