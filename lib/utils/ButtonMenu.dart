@@ -16,6 +16,5 @@ class ButtonMenu extends RaisedButton {
               ),
             ),
             textColor: Colors.white,
-            splashColor: Colors.red,
             color: Colors.lightBlue);
 }
