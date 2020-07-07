@@ -1,8 +1,7 @@
-class LoteResult {
-  final List<String> erros;
-  final Lote data;
+import 'GenericResult.dart';
 
-  LoteResult({this.erros, this.data});
+class LoteResult extends GenericResult<Lote> {
+  LoteResult({erros, data}) : super(erros, data);
 
   factory LoteResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];

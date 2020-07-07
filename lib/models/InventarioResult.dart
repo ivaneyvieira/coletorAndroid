@@ -1,8 +1,7 @@
-class InventarioResult {
-  final List<String> erros;
-  final Inventario data;
+import 'GenericResult.dart';
 
-  InventarioResult({this.erros, this.data});
+class InventarioResult extends GenericResult<Inventario> {
+  InventarioResult({erros, data}) : super(erros, data);
 
   factory InventarioResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];

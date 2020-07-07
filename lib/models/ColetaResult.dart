@@ -1,8 +1,7 @@
-class ColetaResult {
-  final List<String> erros;
-  final Coleta data;
+import 'GenericResult.dart';
 
-  ColetaResult({this.erros, this.data});
+class ColetaResult extends GenericResult<Coleta> {
+  ColetaResult({erros, data}) : super(erros, data);
 
   factory ColetaResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];

@@ -1,8 +1,7 @@
-class LeituraResult {
-  final List<String> erros;
-  final Leitura data;
+import 'GenericResult.dart';
 
-  LeituraResult({this.erros, this.data});
+class LeituraResult extends GenericResult<Leitura> {
+  LeituraResult({erros, data}) : super(erros, data);
 
   factory LeituraResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];

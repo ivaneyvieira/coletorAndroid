@@ -1,8 +1,7 @@
-class UsuarioResult {
-  final List<String> erros;
-  final Usuario data;
+import 'GenericResult.dart';
 
-  UsuarioResult({this.erros, this.data});
+class UsuarioResult extends GenericResult<Usuario> {
+  UsuarioResult({erros, data}) : super(erros, data);
 
   factory UsuarioResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];

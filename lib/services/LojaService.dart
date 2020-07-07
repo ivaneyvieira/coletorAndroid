@@ -2,18 +2,8 @@ import 'package:coletor_android/models/LojaResult.dart';
 
 import 'GenericService.dart';
 
-class LojaService extends GenericService<LojaResult> {
+class LojaService extends GenericService {
   LojaService() : super(modulo: 'loja');
-
-  @override
-  LojaResult fromJson(Map<String, dynamic> json) {
-    return LojaResult.fromJson(json);
-  }
-
-  @override
-  LojaResult fromJsonErro(List<String> erros) {
-    return LojaResult(erros: erros, data: null);
-  }
 
   Future<LojaResult> findById(int id) async {
     return methodGet(

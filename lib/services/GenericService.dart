@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 
 import 'ConfigService.dart';
 
-abstract class GenericService<T> {
+abstract class GenericService {
   final String modulo;
 
   GenericService({this.modulo});
 
-  Future<T> methodGet(String method, String parameters, T fromJson(Map<String, dynamic> json),
+  Future<T> methodGet<T>(String method, String parameters, T fromJson(Map<String, dynamic> json),
       T fromJsonErro(List<String> erros)) async {
     try {
       Response response = await ConfigService.dio.get('${ConfigService.urlBase}/$modulo/$method/$parameters',

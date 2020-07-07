@@ -1,7 +1,8 @@
-class UnitResult {
-  final List<String> erros;
+import 'GenericResult.dart';
 
-  UnitResult({this.erros});
+class UnitResult extends GenericResult<void> {
+
+  UnitResult({erros}) : super(erros, null);
 
   factory UnitResult.fromJson(Map<String, dynamic> json) {
     final errosList = (json['erros'] as List<dynamic>).map((e) => e as String).toList();

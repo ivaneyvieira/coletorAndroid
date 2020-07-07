@@ -6,7 +6,7 @@ import 'package:dio/dio.dart';
 import 'ConfigService.dart';
 import 'GenericService.dart';
 
-class ColetaService extends GenericService<ColetaResult> {
+class ColetaService extends GenericService {
   ColetaService() : super(modulo: 'coleta');
 
   Future<UnitResult> fechaColeta(int coletaId) async {

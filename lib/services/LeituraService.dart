@@ -3,7 +3,7 @@ import 'package:coletor_android/models/UnitResult.dart';
 
 import 'GenericService.dart';
 
-class LeituraService extends GenericService<LeituraResult> {
+class LeituraService extends GenericService {
   LeituraService() : super(modulo: 'leitura');
 
   Future<LeituraResult> ultimaLeitura(int coletaId) async {

@@ -1,8 +1,7 @@
-class IntResult {
-  final List<String> erros;
-  final int data;
+import 'GenericResult.dart';
 
-  IntResult({this.erros, this.data});
+class IntResult extends GenericResult<int> {
+  IntResult({erros, data}) : super(erros, data);
 
   factory IntResult.fromJson(Map<String, dynamic> json) {
     final data = json['data'];
