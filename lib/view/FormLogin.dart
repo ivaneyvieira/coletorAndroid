@@ -1,15 +1,29 @@
 import 'dart:async';
 
-import 'package:coletor_android/models/UsuarioResult.dart';
-import 'package:coletor_android/services/UsuarioService.dart';
+import 'package:coletor_android/utils/ButtonMenu.dart';
+import 'package:coletor_android/utils/ContainerBody.dart';
+import 'package:coletor_android/utils/FormWidget.dart';
+import 'package:coletor_android/utils/TextLabel.dart';
+import 'package:coletor_android/viewModel/ColetorState.dart';
+import 'package:coletor_android/viewModel/ViewException.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'FormMenu.dart';
+import 'TextEditField.dart';
 
-class FormLogin extends StatelessWidget {
-  final service = UsuarioService();
-  var txtMatricla = TextEditingController();
-  var txtNome = TextEditingController();
+class FormLogin extends FormWidget {
+  ColetorState state;
+
+  FormLogin({this.state});
+
+  @override
+  _FormLoginWidgetState createState() => _FormLoginWidgetState();
+}
+
+class _FormLoginWidgetState extends State<FormLogin> with KeyboardHiderMixin {
+  var ctlMatricla = TextEditingController();
+  var ctlNome = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -17,40 +31,27 @@ class FormLogin extends StatelessWidget {
       appBar: AppBar(
         title: Text('Coletor'),
       ),
-      body: Container(
-        margin: EdgeInsets.only(left: 20, top: 10, right: 20, bottom: 10),
+      body: ContainerBody(
         child: ListView(
           scrollDirection: Axis.vertical,
           children: <Widget>[
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Matrícula'),
-              keyboardType: TextInputType.number,
-              controller: txtMatricla,
-              onEditingComplete: (){
-                final mat = txtMatricla.text;
-                final nomeFuture = service.findUsuarioByMatricula(mat);
-                nomeFuture.then((value) {
-                  processFuture(context, value);
-                }).catchError((e) {
-                  txtNome.text = "";
-                });
+            NumberField(
+              labelText: 'Matricula',
+              controller: ctlMatricla,
+              onFieldSubmitted: (txt) {
+                //hideKeyboard();
+                actionLogin(txt);
               },
             ),
-            TextFormField(
-              readOnly: true,
-              decoration: InputDecoration(labelText: 'Nome'),
-              controller: txtNome,
+            TextLabel(
+              label: 'Nome',
+              controller: ctlNome,
             ),
-            RaisedButton(
+            ButtonMenu(
+              label: 'Acessar o Inventário',
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FormMenu()),
-                );
+                actionLogin(ctlMatricla.text);
               },
-              child: const Text(
-                'Acessar o Inventário',
-              ),
             ),
           ],
         ),
@@ -58,30 +59,45 @@ class FormLogin extends StatelessWidget {
     );
   }
 
-  showAlertDialog(BuildContext context, String msg) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        // return object of type Dialog
-        return AlertDialog(
-          title: new Text("Aviso"),
-          content: new Text(msg),
-          actions: <Widget>[
-            // usually buttons at the bottom of the dialog
-            new FlatButton(
-              child: new Text("Ok"),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
+  void actionLogin(String txt) {
+    try {
+      widget.state.actionLogin(txt, (usuario) => setUsuario(usuario));
+    } on ViewException catch (e) {
+      widget.toast(e.toString());
+    }
   }
 
-  FutureOr processFuture(context, UsuarioResult value) {
-    if (value.erros.length > 0) showAlertDialog(context, value.erros.join("\n"));
-    txtNome.text = value.data?.nome ?? '';
+  void setUsuario(usuario) {
+    ctlNome.text = usuario?.nome ?? "";
+    if (widget.state.hasUsuario())
+      navigateToMenu(context);
+    else
+      widget.toast("Usuário não encontrado");
+    widget.state.updateCard();
+  }
+
+  void navigateToMenu(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => FormMenu(
+                state: widget.state,
+              )),
+    );
+  }
+}
+
+abstract class KeyboardHiderMixin {
+  void hideKeyboard({
+    BuildContext context,
+    bool hideTextInput = true,
+    bool requestFocusNode = true,
+  }) {
+    if (hideTextInput) {
+      SystemChannels.textInput.invokeMethod('TextInput.hide');
+    }
+    if (context != null && requestFocusNode) {
+      FocusScope.of(context).requestFocus(FocusNode());
+    }
   }
 }

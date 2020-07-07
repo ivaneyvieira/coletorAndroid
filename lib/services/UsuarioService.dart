@@ -15,7 +15,7 @@ class UsuarioService extends GenericService<UsuarioResult> {
     return UsuarioResult(erros: erros, data: null);
   }
 
-  Future<UsuarioResult> findUsuarioByMatricula(String matricula) async {
+  Future<UsuarioResult> findUsuarioByMatricula(int matricula) async {
     return methodGet('matricula', '$matricula');
   }
 }

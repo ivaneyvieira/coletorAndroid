@@ -20,4 +20,8 @@ class InventarioService extends GenericService<InventarioResult> {
   Future<InventarioResult> findByNum(int num) async {
     return methodGet('findByNum', '$num');
   }
+
+  Future<InventarioResult> findAberto() async {
+    return methodGet('findAberto', '');
+  }
 }

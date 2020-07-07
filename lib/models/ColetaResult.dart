@@ -23,14 +23,14 @@ class Coleta {
   final int coletor;
   final String status;
 
-  Coleta({this.id, this.numleitura, this.inventarioId, this.loteId, this.usuarioId, this.coletor, this.status});
+  Coleta({this.id, this.numleitura, this. inventarioId, this.loteId, this.usuarioId,  this.coletor, this.status});
 
   factory Coleta.fromJson(Map<String, dynamic> json) => Coleta(
       id: json['id'] as int,
       numleitura: json['numleitura'] as int,
+      coletor: json['coletor'] as int,
       inventarioId: json['inventarioId'] as int,
       loteId: json['loteId'] as int,
       usuarioId: json['usuarioId'] as int,
-      coletor: json['coletor'] as int,
       status: json['status'] as String);
 }
