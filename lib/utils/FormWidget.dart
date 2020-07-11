@@ -42,12 +42,11 @@ abstract class FormWidget extends StatefulWidget {
   void navigateTo({BuildContext context, FormWidget form()}) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) => form()),
+      MaterialPageRoute(builder: (context) => form()),
     );
   }
 
-  void closeForm(BuildContext context){
+  void closeForm(BuildContext context) {
     Navigator.pop(context);
   }
 }

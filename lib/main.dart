@@ -1,10 +1,7 @@
-import 'dart:async';
-
 import 'package:coletor_android/utils/FormWidget.dart';
 import 'package:coletor_android/view/FormLogin.dart';
 import 'package:coletor_android/viewModel/ColetorState.dart';
 import 'package:flutter/material.dart';
-import 'package:splashscreen/splashscreen.dart';
 
 void main() {
   runApp(MaterialApp(home: ColetorApp()));

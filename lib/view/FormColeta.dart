@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:coletor_android/models/ProdutoResult.dart';
 import 'package:coletor_android/utils/ButtonMenu.dart';
 import 'package:coletor_android/utils/ContainerBody.dart';
@@ -13,7 +11,7 @@ import 'FormMenu.dart';
 import 'TextEditField.dart';
 
 class FormColeta extends FormWidget {
-  ColetorState state;
+  final ColetorState state;
 
   FormColeta({this.state});
 

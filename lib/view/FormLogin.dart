@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:coletor_android/models/UsuarioResult.dart';
 import 'package:coletor_android/utils/ButtonMenu.dart';
 import 'package:coletor_android/utils/ContainerBody.dart';
 import 'package:coletor_android/utils/FormWidget.dart';
@@ -7,13 +8,12 @@ import 'package:coletor_android/utils/TextLabel.dart';
 import 'package:coletor_android/viewModel/ColetorState.dart';
 import 'package:coletor_android/viewModel/ViewException.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'FormMenu.dart';
 import 'TextEditField.dart';
 
 class FormLogin extends FormWidget {
-  ColetorState state;
+  final ColetorState state;
 
   FormLogin({this.state});
 
@@ -21,7 +21,7 @@ class FormLogin extends FormWidget {
   _FormLoginWidgetState createState() => _FormLoginWidgetState();
 }
 
-class _FormLoginWidgetState extends State<FormLogin> with KeyboardHiderMixin {
+class _FormLoginWidgetState extends State<FormLogin> {
   var ctlMatricla = TextEditingController();
   var ctlNome = TextEditingController();
 
@@ -61,43 +61,22 @@ class _FormLoginWidgetState extends State<FormLogin> with KeyboardHiderMixin {
 
   Future<void> actionLogin(String txt) async {
     try {
-     await widget.state.actionLogin(txt, (usuario) => setUsuario(usuario));
+      await widget.state.actionLogin(txt, (usuario) => setUsuario(usuario));
     } on ViewException catch (e) {
       widget.toast(e.errorMsg);
     }
   }
 
-  void setUsuario(usuario) {
+  void setUsuario(Usuario usuario) {
     ctlNome.text = usuario?.nome ?? "";
     if (widget.state.hasUsuario())
       navigateToMenu(context);
     else
       widget.toast("Usuário não encontrado");
-    widget.state.updateCard();
+    widget.state.setUsuario(usuario);
   }
 
   void navigateToMenu(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-          builder: (context) => FormMenu(
-                state: widget.state,
-              )),
-    );
-  }
-}
-
-abstract class KeyboardHiderMixin {
-  void hideKeyboard({
-    BuildContext context,
-    bool hideTextInput = true,
-    bool requestFocusNode = true,
-  }) {
-    if (hideTextInput) {
-      SystemChannels.textInput.invokeMethod('TextInput.hide');
-    }
-    if (context != null && requestFocusNode) {
-      FocusScope.of(context).requestFocus(FocusNode());
-    }
+    widget.navigateTo(context: context, form: () => FormMenu(state: widget.state));
   }
 }

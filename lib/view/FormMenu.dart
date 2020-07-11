@@ -19,8 +19,22 @@ class FormMenu extends FormWidget {
 }
 
 class _FormMenuState extends State<FormMenu> {
+  void initForm(context) {
+    widget.state.findInventarioAberto((list) async {
+      if (list.isEmpty) {
+        widget.toast("Não há inventário Aberto");
+        widget.closeForm(context);
+      } else if (list.length == 1) {
+        await widget.state.setInventario(list.first);
+      } else if (list.length > 1) {
+        navigateToFromInventario(context);
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    initForm(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('Coletor - Menu'),
@@ -33,12 +47,7 @@ class _FormMenuState extends State<FormMenu> {
             ButtonMenu(
               label: "Inventário",
               onPressed: () {
-                widget.navigateTo(
-                  context: context,
-                  form: () => FormInventario(
-                    state: widget.state,
-                  ),
-                );
+                navigateToFromInventario(context);
               },
             ),
             ButtonMenu(
@@ -75,5 +84,14 @@ class _FormMenuState extends State<FormMenu> {
             ),
           ]),
         ));
+  }
+
+  void navigateToFromInventario(BuildContext context) {
+    widget.navigateTo(
+      context: context,
+      form: () => FormInventario(
+        state: widget.state,
+      ),
+    );
   }
 }

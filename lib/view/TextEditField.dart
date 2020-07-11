@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class NumberField extends TextFormField {
-  var labelText;
-  var hintText;
-  var controller;
-  var onFieldSubmitted;
-  var icon;
+  final labelText;
+  final hintText;
+  final controller;
+  final onFieldSubmitted;
 
   NumberField({this.labelText, this.hintText, this.controller, this.onFieldSubmitted})
       : super(

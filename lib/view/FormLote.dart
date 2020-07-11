@@ -19,6 +19,7 @@ class FormLote extends FormWidget {
 
 class _FormLoteState extends State<FormLote> {
   var ctlLote = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,9 +38,11 @@ class _FormLoteState extends State<FormLote> {
               },
               controller: ctlLote,
             ),
-            ButtonMenu(label: "Confirma", onPressed: () {
-              actionLote(ctlLote.text);
-            }),
+            ButtonMenu(
+                label: "Confirma",
+                onPressed: () {
+                  actionLote(ctlLote.text);
+                }),
             ButtonMenu(
               label: "Sair",
               onPressed: () {
@@ -60,8 +63,8 @@ class _FormLoteState extends State<FormLote> {
               try {
                 widget.state.fechaColeta();
                 widget.closeForm(context);
-              } on ViewException catch(e){
-
+              } on ViewException catch (e) {
+                widget.toast(e.errorMsg);
               }
             });
       else {
@@ -69,7 +72,7 @@ class _FormLoteState extends State<FormLote> {
         widget.state.novoLote(numLote);
         widget.closeForm(context);
       }
-    } on ViewException catch(e){
+    } on ViewException catch (e) {
       widget.toast(e.toString());
     }
   }

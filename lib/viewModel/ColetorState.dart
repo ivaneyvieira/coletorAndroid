@@ -81,14 +81,9 @@ class ColetorState {
 
   bool hasColetaAberta() => _coleta != null;
 
-  void updateCard() {
-    setUsuario(_usuario);
-    updateInventario();
-  }
-
-  Future<void> updateInventario() async {
+  Future<void> findInventarioAberto(void process(List<Inventario> list)) async {
     await inventarioService.findAberto().then((inventarioResult) {
-      setInventario(inventarioResult.data);
+      if (inventarioResult.data.isNotEmpty) process(inventarioResult.data);
       ViewException.fail(inventarioResult.erros);
     }).catchError((e) {
       setInventario(null);
