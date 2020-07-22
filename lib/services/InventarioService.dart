@@ -12,7 +12,8 @@ class InventarioService extends GenericService {
   }
 
   Future<InventarioListResult> findAberto() async {
-    return methodGet('findAberto', '', (json) => InventarioListResult.fromJson(json),
+    final future = await methodGet('findAberto', '', (json) => InventarioListResult.fromJson(json),
         (erros) => InventarioListResult(erros: erros, data: null));
+    return future;
   }
 }

@@ -5,6 +5,7 @@ import 'package:coletor_android/utils/FormWidget.dart';
 import 'package:coletor_android/viewModel/ColetorState.dart';
 import 'package:flutter/material.dart';
 
+import 'FormApaga.dart';
 import 'FormColeta.dart';
 import 'FormInventario.dart';
 import 'FormLote.dart';
@@ -19,22 +20,37 @@ class FormMenu extends FormWidget {
 }
 
 class _FormMenuState extends State<FormMenu> {
-  void initForm(context) {
-    widget.state.findInventarioAberto((list) async {
-      if (list.isEmpty) {
-        widget.toast("Não há inventário Aberto");
-        widget.closeForm(context);
-      } else if (list.length == 1) {
-        await widget.state.setInventario(list.first);
-      } else if (list.length > 1) {
-        navigateToFromInventario(context);
-      }
-    });
+  void initForm(context) async {
+    final list = await widget.state.findInventarioAberto();
+    if (list.isEmpty) {
+      widget.toast("Não há inventário Aberto");
+      widget.closeForm(context);
+      await widget.state.setInventario(null);
+    } else if (list.length == 1) {
+      await widget.state.setInventario(list.first);
+    } else if (list.length > 1) {
+      if (widget.state.hasInventario()) {
+        final inventarioSalvo = widget.state.getInventario();
+        if (list.contains(inventarioSalvo))
+          await widget.state.setInventario(inventarioSalvo);
+        else {
+          await widget.state.setInventario(null);
+          navigateToFormInventario(context);
+        }
+      } else
+        navigateToFormInventario(context);
+    }
+    if (widget.state.hasInventario() == false) {
+      await widget.state.updateColeta();
+      if (widget.state.hasColetaAberta())
+        navigateToFormColeta(context);
+      else
+        navigateToFormLote(context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    initForm(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('Coletor - Menu'),
@@ -45,51 +61,58 @@ class _FormMenuState extends State<FormMenu> {
               state: widget.state,
             ),
             ButtonMenu(
-              label: "Inventário",
-              onPressed: () {
-                navigateToFromInventario(context);
-              },
-            ),
-            ButtonMenu(
               label: "Lote",
               onPressed: () {
-                widget.navigateTo(
-                  context: context,
-                  form: () => FormLote(
-                    state: widget.state,
-                  ),
-                );
+                navigateToFormLote(context);
               },
             ),
             ButtonMenu(
               label: "Coleta",
               onPressed: () {
-                widget.navigateTo(
-                  context: context,
-                  form: () => FormColeta(
-                    state: widget.state,
-                  ),
-                );
+                navigateToFormColeta(context);
               },
             ),
             ButtonMenu(
               label: "Apaga",
-              onPressed: () {},
-            ),
-            ButtonMenu(
-              label: "Sair",
               onPressed: () {
-                widget.closeForm(context);
+                navigateToFormApaga(context);
               },
             ),
           ]),
         ));
   }
 
-  void navigateToFromInventario(BuildContext context) {
+  void navigateToFormInventario(BuildContext context) {
     widget.navigateTo(
       context: context,
       form: () => FormInventario(
+        state: widget.state,
+      ),
+    );
+  }
+
+  void navigateToFormLote(BuildContext context) {
+    widget.navigateTo(
+      context: context,
+      form: () => FormLote(
+        state: widget.state,
+      ),
+    );
+  }
+
+  void navigateToFormColeta(BuildContext context) {
+    widget.navigateTo(
+      context: context,
+      form: () => FormColeta(
+        state: widget.state,
+      ),
+    );
+  }
+
+  void navigateToFormApaga(BuildContext context) {
+    widget.navigateTo(
+      context: context,
+      form: () => FormApaga(
         state: widget.state,
       ),
     );

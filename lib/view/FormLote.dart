@@ -43,12 +43,6 @@ class _FormLoteState extends State<FormLote> {
                 onPressed: () {
                   actionLote(ctlLote.text);
                 }),
-            ButtonMenu(
-              label: "Sair",
-              onPressed: () {
-                widget.closeForm(context);
-              },
-            ),
           ]),
         ));
   }

@@ -1,10 +1,10 @@
 import 'dart:async';
 
+import 'package:coletor_android/models/InventarioResult.dart';
 import 'package:coletor_android/models/UsuarioResult.dart';
 import 'package:coletor_android/utils/ButtonMenu.dart';
 import 'package:coletor_android/utils/ContainerBody.dart';
 import 'package:coletor_android/utils/FormWidget.dart';
-import 'package:coletor_android/utils/TextLabel.dart';
 import 'package:coletor_android/viewModel/ColetorState.dart';
 import 'package:coletor_android/viewModel/ViewException.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +25,27 @@ class _FormLoginWidgetState extends State<FormLogin> {
   var ctlMatricla = TextEditingController();
   var ctlNome = TextEditingController();
 
+  List<Inventario> _inventarios = List();
+  List<DropdownMenuItem<Inventario>> _dropdownMenuItems;
+  Inventario _selectedInventario;
+
+  @override
+  void initState() {
+    super.initState();
+    final future = widget.state.findInventarioAberto();
+    future.then((list) {
+      setState(() {
+        _inventarios.addAll(list);
+
+        _dropdownMenuItems = buildDropdownMenuItems(_inventarios);
+
+        _selectedInventario = _dropdownMenuItems[0].value;
+
+        widget.state.setInventario(_selectedInventario);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,14 +59,11 @@ class _FormLoginWidgetState extends State<FormLogin> {
             NumberField(
               labelText: 'Matricula',
               controller: ctlMatricla,
-              onFieldSubmitted: (txt) {
-                //hideKeyboard();
-                actionLogin(txt);
-              },
             ),
-            TextLabel(
-              label: 'Nome',
-              controller: ctlNome,
+            DropdownButton(
+              value: _selectedInventario,
+              items: _dropdownMenuItems,
+              onChanged: onChangeDropdownItem,
             ),
             ButtonMenu(
               label: 'Acessar o Inventário',
@@ -61,7 +79,8 @@ class _FormLoginWidgetState extends State<FormLogin> {
 
   Future<void> actionLogin(String txt) async {
     try {
-      await widget.state.actionLogin(txt, (usuario) => setUsuario(usuario));
+      final usuario = await widget.state.actionLogin(txt);
+      setUsuario(usuario);
     } on ViewException catch (e) {
       widget.toast(e.errorMsg);
     }
@@ -78,5 +97,27 @@ class _FormLoginWidgetState extends State<FormLogin> {
 
   void navigateToMenu(BuildContext context) {
     widget.navigateTo(context: context, form: () => FormMenu(state: widget.state));
+  }
+
+  String textInventario(Inventario inventario) {
+    final loja = widget.state.getLoja(inventario.lojaId);
+    return "Invenário ${loja.sigla} ${inventario.numero}";
+  }
+
+  List<DropdownMenuItem<Inventario>> buildDropdownMenuItems(List<Inventario> inventarios) {
+    return inventarios.map((inventario) {
+      final text = textInventario(inventario);
+      return DropdownMenuItem(
+        value: inventario,
+        child: Text(
+          text,
+          overflow: TextOverflow.ellipsis,
+        ),
+      );
+    }).toList();
+  }
+
+  Future<void> onChangeDropdownItem(Inventario inventario) async {
+    await widget.state.setInventario(inventario);
   }
 }

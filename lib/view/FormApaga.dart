@@ -4,22 +4,21 @@ import 'package:coletor_android/utils/ContainerBody.dart';
 import 'package:coletor_android/utils/FormWidget.dart';
 import 'package:coletor_android/utils/TextLabel.dart';
 import 'package:coletor_android/viewModel/ColetorState.dart';
-import 'package:coletor_android/viewModel/ViewException.dart';
 import 'package:flutter/material.dart';
 
 import 'FormMenu.dart';
 import 'TextEditField.dart';
 
-class FormColeta extends FormWidget {
+class FormApaga extends FormWidget {
   final ColetorState state;
 
-  FormColeta({this.state});
+  FormApaga({this.state});
 
   @override
-  _FormColetaWidgetState createState() => _FormColetaWidgetState();
+  _FormApagaWidgetState createState() => _FormApagaWidgetState();
 }
 
-class _FormColetaWidgetState extends State<FormColeta> {
+class _FormApagaWidgetState extends State<FormApaga> {
   final ctlLeitura = TextEditingController();
 
   final ctlBarra = TextEditingController();
@@ -76,12 +75,7 @@ class _FormColetaWidgetState extends State<FormColeta> {
   }
 
   Future<void> actionCodigoBarras(String txt) async {
-    try {
-      final produto = await widget.state.actionColeta(txt);
-      setProduto(produto);
-    } on ViewException catch (e) {
-      widget.toast(e.toString());
-    }
+
   }
 
   void setProduto(Produto produto) {

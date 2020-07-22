@@ -1,11 +1,10 @@
+
 import 'package:coletor_android/utils/ButtonMenu.dart';
 import 'package:coletor_android/utils/CardState.dart';
 import 'package:coletor_android/utils/ContainerBody.dart';
 import 'package:coletor_android/utils/FormWidget.dart';
 import 'package:coletor_android/viewModel/ColetorState.dart';
 import 'package:flutter/material.dart';
-
-import 'TextEditField.dart';
 
 class FormInventario extends FormWidget {
   final ColetorState state;
@@ -18,6 +17,10 @@ class FormInventario extends FormWidget {
 
 class _FormInventarioState extends State<FormInventario> {
   var ctlInventario = TextEditingController();
+
+
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,27 +32,21 @@ class _FormInventarioState extends State<FormInventario> {
             CardState(
               state: widget.state,
             ),
-            NumberField(
-              labelText: 'Inventário',
-              onFieldSubmitted: (txt) {
-                actionInventario(txt);
-              },
-              controller: ctlInventario,
-            ),
+            Text("Selecione um inventário"),
+
             ButtonMenu(
                 label: "Confirma",
                 onPressed: () {
                   actionInventario(ctlInventario.text);
+                  widget.closeForm(context);
                 }),
-            ButtonMenu(
-              label: "Sair",
-              onPressed: () {
-                widget.closeForm(context);
-              },
-            ),
           ]),
         ));
   }
 
   void actionInventario(txt) {}
+
+
+
+
 }
